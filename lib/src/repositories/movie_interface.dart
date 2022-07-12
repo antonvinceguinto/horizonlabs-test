@@ -1,6 +1,7 @@
-import 'package:tmdb_riverpod/src/models/movie.dart';
+import 'package:horizonlabs_exam/src/models/movie.dart';
 
 abstract class IMovie {
   Future<List<Movie>> getPopularMovies();
-  Future<List<Movie>> getNowPlayingMovies();
+  Future<List<Movie>> getNowShowingMovies();
+  Future<List<Movie>> getUpcomingMovies();
 }

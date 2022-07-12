@@ -23,8 +23,8 @@ class Movie {
       posterPath: map['poster_path']?.toString() ?? '',
       backdropPath: map['backdrop_path']?.toString() ?? '',
       overview: map['overview']?.toString() ?? '',
-      releaseDate: map['releaseDate']?.toString() ?? '',
-      voteAverage: double.tryParse(map['voteAverage'].toString()) ?? 0,
+      releaseDate: map['release_date']?.toString() ?? '',
+      voteAverage: double.tryParse(map['vote_average'].toString()) ?? 0,
     );
   }
 
@@ -68,8 +68,8 @@ class Movie {
       'poster_path': posterPath,
       'backdrop_path': backdropPath,
       'overview': overview,
-      'releaseDate': releaseDate,
-      'voteAverage': voteAverage,
+      'release_date': releaseDate,
+      'vote_average': voteAverage,
     };
   }
 

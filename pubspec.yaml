@@ -1,4 +1,4 @@
-name: tmdb_riverpod
+name: horizonlabs_exam
 description: A new Flutter project.
 
 # Prevent accidental publishing to pub.dev.
@@ -17,9 +17,18 @@ dependencies:
 
   cupertino_icons: ^1.0.5
 
+  intl: ^0.17.0
   dio: ^4.0.6
   flutter_riverpod: ^1.0.4
   riverpod: ^1.0.3
+  carousel_slider: ^4.1.1
+  drag_and_drop_lists:
+    git:
+      url: https://github.com/init-Mobile/DragAndDropLists
+      ref: master
+  animated_text_kit: ^4.2.2
+  shared_preferences: ^2.0.15
+  sticky_headers: ^0.3.0+2
 
 dev_dependencies:
   flutter_test:

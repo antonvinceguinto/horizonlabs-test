@@ -1,27 +1,25 @@
-// ignore_for_file: prefer_single_quotes
-
 import 'package:dio/dio.dart';
 
 class MoviesException implements Exception {
   MoviesException.fromDioError(DioError dioError) {
     switch (dioError.type) {
       case DioErrorType.cancel:
-        message = "Request to API server was cancelled";
+        message = 'Request to API server was cancelled';
         break;
       case DioErrorType.connectTimeout:
-        message = "Connection timeout with API server";
+        message = 'Connection timeout with API server';
         break;
       case DioErrorType.other:
-        message = "Connection to API server failed due to internet connection";
+        message = 'Connection to API server failed due to internet connection';
         break;
       case DioErrorType.receiveTimeout:
-        message = "Receive timeout in connection with API server";
+        message = 'Receive timeout in connection with API server';
         break;
       case DioErrorType.response:
         message = _handleError(dioError.response?.statusCode);
         break;
       case DioErrorType.sendTimeout:
-        message = "Send timeout in connection with API server";
+        message = 'Send timeout in connection with API server';
         break;
     }
   }

@@ -1,64 +1,152 @@
+import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tmdb_riverpod/src/features/movie_details/movie_details.dart';
-import 'package:tmdb_riverpod/src/repositories/movie_service.dart';
-import 'package:tmdb_riverpod/src/utils/errors/movies_exception.dart';
+import 'package:horizonlabs_exam/src/features/custom_widgets/search_field.dart';
+import 'package:horizonlabs_exam/src/features/home/widgets/horizontal_movie_container.dart';
+import 'package:horizonlabs_exam/src/features/home/widgets/now_showing_carousel.dart';
+import 'package:horizonlabs_exam/src/repositories/darkmode/theme_controller.dart';
+import 'package:horizonlabs_exam/src/repositories/movie_service.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 
-class Homepage extends ConsumerWidget {
+class Homepage extends ConsumerStatefulWidget {
   const Homepage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('TMDB'),
+  ConsumerState<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends ConsumerState<Homepage> {
+  List<DragAndDropList> _draggableMovies = [];
+
+  void _onItemReorder(
+    int oldItemIndex,
+    int oldListIndex,
+    int newItemIndex,
+    int newListIndex,
+  ) {
+    setState(() {
+      final movedItem =
+          _draggableMovies[oldListIndex].children.removeAt(oldItemIndex);
+      _draggableMovies[newListIndex].children.insert(newItemIndex, movedItem);
+    });
+  }
+
+  void _onListReorder(
+    int oldListIndex,
+    int newListIndex,
+  ) {
+    setState(() {
+      final movedList = _draggableMovies.removeAt(oldListIndex);
+      _draggableMovies.insert(newListIndex, movedList);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _draggableMovies = [
+      DragAndDropList(
+        contentsWhenEmpty: const SizedBox(),
+        children: [
+          DragAndDropItem(
+            child: const NowShowingCarousel(),
+          ),
+        ],
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
-      body: ref.watch(moviesFutureProvider).when(
-            data: (movies) {
-              return RefreshIndicator(
-                onRefresh: () {
-                  return ref.refresh(moviesFutureProvider.future);
-                },
-                child: GridView.extent(
-                  maxCrossAxisExtent: 300,
-                  padding: const EdgeInsets.all(3),
-                  mainAxisSpacing: 3,
-                  crossAxisSpacing: 3,
-                  childAspectRatio: 0.7,
-                  children: movies.map((movie) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          MovieDetails.routeName,
-                          arguments: movie,
-                        );
-                      },
-                      child: Image.network(
-                        movie.fullImageUrl,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                      ),
-                    );
-                  }).toList(),
-                ),
-              );
-            },
-            error: (err, s) {
-              if (err is MoviesException) {
-                return Center(
-                  child: Text('${err.message}'),
-                );
-              }
-              return const Center(
-                child: Text('Oops, Something went wrong'),
-              );
-            },
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
+      DragAndDropList(
+        contentsWhenEmpty: const SizedBox(),
+        children: [
+          DragAndDropItem(
+            child: HorizontalMovieContainer(
+              futureProvider: popularMoviesFutureProvider,
+              headerTitle: 'Popular',
             ),
           ),
+        ],
+      ),
+      DragAndDropList(
+        contentsWhenEmpty: const SizedBox(),
+        children: [
+          DragAndDropItem(
+            child: HorizontalMovieContainer(
+              futureProvider: upcomingMoviesFutureProvider,
+              headerTitle: 'Upcoming',
+            ),
+          ),
+        ],
+      ),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final themeController = ref.watch(themeControllerProvider.notifier);
+
+    return CupertinoPageScaffold(
+      child: NestedScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverOverlapAbsorber(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              sliver: CupertinoSliverNavigationBar(
+                largeTitle: const Text('Horizon Movies'),
+                trailing: Material(
+                  color: Colors.transparent,
+                  child: GestureDetector(
+                    onTap: () async {
+                      await themeController.updateThemeMode();
+                    },
+                    child: ref.watch(isDarkTheme)
+                        ? const Icon(
+                            Icons.light_mode,
+                            size: 28,
+                          )
+                        : const Icon(
+                            Icons.brightness_3,
+                            size: 28,
+                          ),
+                  ),
+                ),
+              ),
+            ),
+          ];
+        },
+        body: Material(
+          color: Theme.of(context).backgroundColor,
+          child: SafeArea(
+            child: SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              child: StickyHeader(
+                header: const Padding(
+                  padding: EdgeInsets.only(top: 38),
+                  child: SearchField(),
+                ),
+                content: Column(
+                  children: [
+                    DragAndDropLists(
+                      listPadding: EdgeInsets.zero,
+                      lastItemTargetHeight: 0,
+                      disableScrolling: true,
+                      onListReorder: _onListReorder,
+                      onItemReorder: _onItemReorder,
+                      children: _draggableMovies,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 32),
+                      child: Text(
+                        'Horizonlabs © 2022',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
