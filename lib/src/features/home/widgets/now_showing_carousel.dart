@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:horizonlabs_exam/src/features/custom_widgets/ref_watch.dart';
 import 'package:horizonlabs_exam/src/features/movie_details/movie_details.dart';
-import 'package:horizonlabs_exam/src/repositories/movie_service.dart';
+import 'package:horizonlabs_exam/src/repositories/movie/movie_service.dart';
 import 'package:horizonlabs_exam/src/utils/errors/movies_exception.dart';
 
 class NowShowingCarousel extends ConsumerWidget {

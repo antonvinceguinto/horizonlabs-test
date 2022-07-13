@@ -5,78 +5,154 @@ import 'package:horizonlabs_exam/src/models/movie.dart';
 import 'package:horizonlabs_exam/src/repositories/darkmode/theme_controller.dart';
 import 'package:horizonlabs_exam/src/utils/extensions.dart';
 
-class MovieDetails extends ConsumerWidget {
+class MovieDetails extends ConsumerStatefulWidget {
   const MovieDetails({super.key});
 
   static const routeName = '/movie-details';
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _MovieDetailsState();
+}
+
+class _MovieDetailsState extends ConsumerState<MovieDetails>
+    with TickerProviderStateMixin {
+  late TabController tabController;
+  late ScrollController _scrollController;
+
+  bool overviewTopSafearea = false;
+
+  Widget _movieDetails(Movie movie) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        16,
+        16,
+        16,
+        0,
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AnimatedTextKit(
+              isRepeatingAnimation: false,
+              animatedTexts: [
+                ColorizeAnimatedText(
+                  movie.title,
+                  textStyle: Theme.of(context).textTheme.headline5!.copyWith(
+                        fontWeight: FontWeight.w900,
+                      ),
+                  colors: [
+                    Colors.red,
+                    Colors.purple,
+                    if (ref.watch(isDarkTheme)) Colors.white else Colors.black,
+                  ],
+                )
+              ],
+            ),
+            const SizedBox(height: 3),
+            if (movie.voteAverage != 0) ...{
+              Text(
+                'Rating: ${movie.voteAverage}/10',
+                style: Theme.of(context).textTheme.subtitle1,
+              )
+            },
+            const SizedBox(height: 3),
+            if (movie.releaseDate != '')
+              Text(
+                'Released on: ${movie.releaseDate.toDate()}',
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+            const SizedBox(height: 8),
+            Text(movie.overview),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _scroll() {
+    if (_scrollController.offset > 550) {
+      setState(() {
+        overviewTopSafearea = true;
+      });
+      return;
+    }
+
+    setState(() {
+      overviewTopSafearea = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(
+      length: 3,
+      vsync: this,
+    );
+    _scrollController = ScrollController()..addListener(_scroll);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    tabController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     /**
      * We passed the movie arguments from homepage to this page. 
     **/
     final movie = ModalRoute.of(context)!.settings.arguments! as Movie;
-    const heightOffset = 1.7;
+    const expandedHeightOffset = 0.6;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(movie.title),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Image.network(
+    return NestedScrollView(
+      controller: _scrollController,
+      headerSliverBuilder: (context, innerBoxIsScrolled) => [
+        SliverAppBar(
+          pinned: true,
+          expandedHeight:
+              MediaQuery.of(context).size.height * expandedHeightOffset,
+          title: overviewTopSafearea ? Text(movie.title) : const SizedBox(),
+          flexibleSpace: FlexibleSpaceBar(
+            background: SizedBox(
+              child: Image.network(
                 movie.fullImageUrlHD,
                 fit: BoxFit.cover,
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height / heightOffset,
+                // height: MediaQuery.of(context).size.height,
               ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+          ),
+        ),
+      ],
+      body: Material(
+        child: Column(
+          children: [
+            TabBar(
+              controller: tabController,
+              labelColor: Colors.blue,
+              tabs: const [
+                Tab(text: 'Overview 1'),
+                Tab(text: 'Overview 2'),
+                Tab(text: 'Overview 3'),
+              ],
+            ),
+            Expanded(
+              child: SafeArea(
+                top: overviewTopSafearea,
+                child: TabBarView(
+                  controller: tabController,
                   children: [
-                    AnimatedTextKit(
-                      isRepeatingAnimation: false,
-                      animatedTexts: [
-                        ColorizeAnimatedText(
-                          movie.title,
-                          textStyle:
-                              Theme.of(context).textTheme.headline5!.copyWith(
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                          colors: [
-                            Colors.red,
-                            Colors.purple,
-                            if (ref.watch(isDarkTheme))
-                              Colors.white
-                            else
-                              Colors.black,
-                          ],
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 3),
-                    if (movie.voteAverage != 0) ...{
-                      Text(
-                        'Rating: ${movie.voteAverage}/10',
-                        style: Theme.of(context).textTheme.subtitle1,
-                      )
-                    },
-                    const SizedBox(height: 3),
-                    if (movie.releaseDate != '')
-                      Text(
-                        'Released on: ${movie.releaseDate.toDate()}',
-                        style: Theme.of(context).textTheme.subtitle1,
-                      ),
-                    const SizedBox(height: 8),
-                    Text(movie.overview),
+                    _movieDetails(movie),
+                    _movieDetails(movie),
+                    _movieDetails(movie),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

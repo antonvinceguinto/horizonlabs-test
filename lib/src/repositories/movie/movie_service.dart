@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:horizonlabs_exam/src/environment_config.dart';
 import 'package:horizonlabs_exam/src/models/movie.dart';
-import 'package:horizonlabs_exam/src/repositories/movie_interface.dart';
+import 'package:horizonlabs_exam/src/repositories/movie/movie_interface.dart';
 import 'package:horizonlabs_exam/src/utils/errors/movies_exception.dart';
 
 enum MovieType { popular, nowShowing, upcoming }

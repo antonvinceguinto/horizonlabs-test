@@ -6,7 +6,7 @@ import 'package:horizonlabs_exam/src/features/custom_widgets/search_field.dart';
 import 'package:horizonlabs_exam/src/features/home/widgets/horizontal_movie_container.dart';
 import 'package:horizonlabs_exam/src/features/home/widgets/now_showing_carousel.dart';
 import 'package:horizonlabs_exam/src/repositories/darkmode/theme_controller.dart';
-import 'package:horizonlabs_exam/src/repositories/movie_service.dart';
+import 'package:horizonlabs_exam/src/repositories/movie/movie_service.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
 class Homepage extends ConsumerStatefulWidget {
