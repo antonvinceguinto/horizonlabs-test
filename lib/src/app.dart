@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:horizonlabs_exam/src/features/home/home.dart';
 import 'package:horizonlabs_exam/src/features/movie_details/movie_details.dart';
+import 'package:horizonlabs_exam/src/features/profile/profile.dart';
 import 'package:horizonlabs_exam/src/repositories/darkmode/theme_controller.dart';
 import 'package:horizonlabs_exam/src/utils/custom_theme_data.dart';
 
@@ -40,6 +41,8 @@ class MyApp extends ConsumerWidget {
             switch (routeSettings.name) {
               case MovieDetails.routeName:
                 return const MovieDetails();
+              case Profile.routeName:
+                return const Profile();
               default:
                 return const Homepage();
             }

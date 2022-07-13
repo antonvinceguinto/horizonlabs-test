@@ -71,15 +71,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.6"
-  drag_and_drop_lists:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: master
-      resolved-ref: bb224b167574a35f722c9e9fbfa960dbee232ce5
-      url: "https://github.com/init-Mobile/DragAndDropLists"
-    source: git
-    version: "0.3.2+2"
   fake_async:
     dependency: transitive
     description:

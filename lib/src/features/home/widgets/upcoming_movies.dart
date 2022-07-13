@@ -34,7 +34,7 @@ class UpcomingMovies extends ConsumerWidget {
               child: ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: movies.length,
+                itemCount: movies.length - 5,
                 itemBuilder: (context, index) {
                   final movie = movies[index];
 

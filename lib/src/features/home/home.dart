@@ -1,4 +1,3 @@
-import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,7 +5,7 @@ import 'package:horizonlabs_exam/src/features/custom_widgets/search_field.dart';
 import 'package:horizonlabs_exam/src/features/home/widgets/horizontal_movie_container.dart';
 import 'package:horizonlabs_exam/src/features/home/widgets/now_showing_carousel.dart';
 import 'package:horizonlabs_exam/src/features/home/widgets/upcoming_movies.dart';
-import 'package:horizonlabs_exam/src/repositories/darkmode/theme_controller.dart';
+import 'package:horizonlabs_exam/src/features/profile/profile.dart';
 import 'package:horizonlabs_exam/src/repositories/movie/movie_service.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
@@ -18,70 +17,8 @@ class Homepage extends ConsumerStatefulWidget {
 }
 
 class _HomepageState extends ConsumerState<Homepage> {
-  List<DragAndDropList> _draggableMovies = [];
-
-  void _onItemReorder(
-    int oldItemIndex,
-    int oldListIndex,
-    int newItemIndex,
-    int newListIndex,
-  ) {
-    setState(() {
-      final movedItem =
-          _draggableMovies[oldListIndex].children.removeAt(oldItemIndex);
-      _draggableMovies[newListIndex].children.insert(newItemIndex, movedItem);
-    });
-  }
-
-  void _onListReorder(
-    int oldListIndex,
-    int newListIndex,
-  ) {
-    setState(() {
-      final movedList = _draggableMovies.removeAt(oldListIndex);
-      _draggableMovies.insert(newListIndex, movedList);
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final themeController = ref.watch(themeControllerProvider.notifier);
-
-    _draggableMovies = [
-      DragAndDropList(
-        contentsWhenEmpty: const SizedBox(height: 0),
-        children: <DragAndDropItem>[
-          DragAndDropItem(
-            child: const NowShowingCarousel(),
-          ),
-        ],
-      ),
-      DragAndDropList(
-        contentsWhenEmpty: const SizedBox(height: 0),
-        children: <DragAndDropItem>[
-          DragAndDropItem(
-            child: HorizontalMovieContainer(
-              futureProvider: popularMoviesFutureProvider,
-              headerTitle: 'Popular',
-            ),
-          ),
-        ],
-      ),
-      DragAndDropList(
-        contentsWhenEmpty: const SizedBox(height: 0),
-        children: <DragAndDropItem>[
-          DragAndDropItem(
-            child: const UpcomingMovies(),
-          ),
-        ],
-      ),
-    ];
-
     return CupertinoPageScaffold(
       child: NestedScrollView(
         physics: const NeverScrollableScrollPhysics(),
@@ -90,22 +27,23 @@ class _HomepageState extends ConsumerState<Homepage> {
             SliverOverlapAbsorber(
               handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
               sliver: CupertinoSliverNavigationBar(
+                backgroundColor: Theme.of(context).backgroundColor,
+                border: const Border(),
                 largeTitle: const Text('Horizon Movies'),
                 trailing: Material(
                   color: Colors.transparent,
                   child: GestureDetector(
                     onTap: () async {
-                      await themeController.updateThemeMode();
+                      Navigator.restorablePushNamed(
+                        context,
+                        Profile.routeName,
+                      );
                     },
-                    child: ref.watch(isDarkTheme)
-                        ? const Icon(
-                            Icons.light_mode,
-                            size: 28,
-                          )
-                        : const Icon(
-                            Icons.brightness_3,
-                            size: 28,
-                          ),
+                    child: const CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        'https://i.pravatar.cc/80',
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -133,12 +71,6 @@ class _HomepageState extends ConsumerState<Homepage> {
                     const UpcomingMovies(),
                   ],
                 ),
-                // DragAndDropLists(
-                //   disableScrolling: true,
-                //   onListReorder: _onListReorder,
-                //   onItemReorder: _onItemReorder,
-                //   children: _draggableMovies,
-                // ),
               ),
             ),
           ),
