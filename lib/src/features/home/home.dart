@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:horizonlabs_exam/src/features/custom_widgets/search_field.dart';
 import 'package:horizonlabs_exam/src/features/home/widgets/horizontal_movie_container.dart';
 import 'package:horizonlabs_exam/src/features/home/widgets/now_showing_carousel.dart';
+import 'package:horizonlabs_exam/src/features/home/widgets/upcoming_movies.dart';
 import 'package:horizonlabs_exam/src/repositories/darkmode/theme_controller.dart';
 import 'package:horizonlabs_exam/src/repositories/movie/movie_service.dart';
 import 'package:sticky_headers/sticky_headers.dart';
@@ -45,18 +46,24 @@ class _HomepageState extends ConsumerState<Homepage> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final themeController = ref.watch(themeControllerProvider.notifier);
+
     _draggableMovies = [
       DragAndDropList(
-        contentsWhenEmpty: const SizedBox(),
-        children: [
+        contentsWhenEmpty: const SizedBox(height: 0),
+        children: <DragAndDropItem>[
           DragAndDropItem(
             child: const NowShowingCarousel(),
           ),
         ],
       ),
       DragAndDropList(
-        contentsWhenEmpty: const SizedBox(),
-        children: [
+        contentsWhenEmpty: const SizedBox(height: 0),
+        children: <DragAndDropItem>[
           DragAndDropItem(
             child: HorizontalMovieContainer(
               futureProvider: popularMoviesFutureProvider,
@@ -66,22 +73,14 @@ class _HomepageState extends ConsumerState<Homepage> {
         ],
       ),
       DragAndDropList(
-        contentsWhenEmpty: const SizedBox(),
-        children: [
+        contentsWhenEmpty: const SizedBox(height: 0),
+        children: <DragAndDropItem>[
           DragAndDropItem(
-            child: HorizontalMovieContainer(
-              futureProvider: upcomingMoviesFutureProvider,
-              headerTitle: 'Upcoming',
-            ),
+            child: const UpcomingMovies(),
           ),
         ],
       ),
     ];
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final themeController = ref.watch(themeControllerProvider.notifier);
 
     return CupertinoPageScaffold(
       child: NestedScrollView(
@@ -120,28 +119,26 @@ class _HomepageState extends ConsumerState<Homepage> {
               physics: const NeverScrollableScrollPhysics(),
               child: StickyHeader(
                 header: const Padding(
-                  padding: EdgeInsets.only(top: 38),
+                  padding: EdgeInsets.only(top: 40),
                   child: SearchField(),
                 ),
                 content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    DragAndDropLists(
-                      listPadding: EdgeInsets.zero,
-                      lastItemTargetHeight: 0,
-                      disableScrolling: true,
-                      onListReorder: _onListReorder,
-                      onItemReorder: _onItemReorder,
-                      children: _draggableMovies,
+                    const NowShowingCarousel(),
+                    HorizontalMovieContainer(
+                      futureProvider: popularMoviesFutureProvider,
+                      headerTitle: 'Popular',
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 32),
-                      child: Text(
-                        'Horizonlabs © 2022',
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
+                    const UpcomingMovies(),
                   ],
                 ),
+                // DragAndDropLists(
+                //   disableScrolling: true,
+                //   onListReorder: _onListReorder,
+                //   onItemReorder: _onItemReorder,
+                //   children: _draggableMovies,
+                // ),
               ),
             ),
           ),

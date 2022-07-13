@@ -23,17 +23,11 @@ class NowShowingCarousel extends ConsumerWidget {
               right: 16,
               bottom: 8,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Now Showing',
-                  style: Theme.of(context).textTheme.headline5?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const Icon(Icons.drag_handle),
-              ],
+            child: Text(
+              'Now Showing',
+              style: Theme.of(context).textTheme.headline5?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ),
           ref.watch(nowShowingMoviesFutureProvider).when(

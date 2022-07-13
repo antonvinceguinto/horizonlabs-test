@@ -27,17 +27,11 @@ class HorizontalMovieContainer extends ConsumerWidget {
               left: 16,
               right: 16,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  headerTitle,
-                  style: Theme.of(context).textTheme.headline5?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const Icon(Icons.drag_handle),
-              ],
+            child: Text(
+              headerTitle,
+              style: Theme.of(context).textTheme.headline5?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ),
           SizedBox(
