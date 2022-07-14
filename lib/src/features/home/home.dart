@@ -35,7 +35,7 @@ class _HomepageState extends ConsumerState<Homepage> {
                   color: Colors.transparent,
                   child: GestureDetector(
                     onTap: () async {
-                      await showBarModalBottomSheet(
+                      await showBarModalBottomSheet<void>(
                         context: context,
                         builder: (context) => Container(
                           constraints: BoxConstraints(

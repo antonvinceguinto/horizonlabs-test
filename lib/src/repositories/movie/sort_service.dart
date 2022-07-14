@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:horizonlabs_exam/src/environment_config.dart';
 import 'package:horizonlabs_exam/src/models/movie.dart';
 import 'package:horizonlabs_exam/src/repositories/movie/movie_service.dart';
+import 'package:horizonlabs_exam/src/repositories/movie/sort_interface.dart';
 import 'package:horizonlabs_exam/src/utils/errors/movies_exception.dart';
 
 enum GenreType {
@@ -28,7 +28,7 @@ enum GenreType {
   western,
 }
 
-class SortService {
+class SortService extends ISort {
   SortService({
     required this.environmentConfig,
     required this.dio,
@@ -39,6 +39,7 @@ class SortService {
 
   final String baseUrl = 'https://api.themoviedb.org/3';
 
+  @override
   Future<List<Movie>> getUpcomingMovies() async {
     try {
       final response = await dio.get<Map<String, dynamic>>(
@@ -61,6 +62,52 @@ class SortService {
       throw MoviesException.fromDioError(dioErr);
     }
   }
+
+  @override
+  String getGenreType(int genreId) {
+    switch (genreId) {
+      case 28:
+        return GenreType.action.name;
+      case 12:
+        return GenreType.adventure.name;
+      case 16:
+        return GenreType.animation.name;
+      case 35:
+        return GenreType.comedy.name;
+      case 80:
+        return GenreType.crime.name;
+      case 99:
+        return GenreType.documentary.name;
+      case 18:
+        return GenreType.drama.name;
+      case 10751:
+        return GenreType.family.name;
+      case 14:
+        return GenreType.fantasy.name;
+      case 36:
+        return GenreType.history.name;
+      case 27:
+        return GenreType.horror.name;
+      case 10402:
+        return GenreType.music.name;
+      case 9648:
+        return GenreType.mystery.name;
+      case 10749:
+        return GenreType.romance.name;
+      case 878:
+        return GenreType.scienceFiction.name;
+      case 10770:
+        return GenreType.tvMovie.name;
+      case 53:
+        return GenreType.thriller.name;
+      case 10752:
+        return GenreType.war.name;
+      case 37:
+        return GenreType.western.name;
+      default:
+        return 'Unknown';
+    }
+  }
 }
 
 /// Provider for Genre Service
@@ -72,9 +119,14 @@ final sortServiceProvider = Provider<SortService>(
 );
 
 final genreSortProvider = StateProvider<GenreType>(
-  // We return the default sort type, here name.
+  // We return the default sort type
   (ref) => GenreType.action,
 );
+
+final getGenreProvider = Provider<GenreType>((ref) {
+  final genreType = ref.read(genreSortProvider);
+  return genreType;
+});
 
 /// Provider for sorted upcoming movies
 final sortedUpcomingMoviesProvider =

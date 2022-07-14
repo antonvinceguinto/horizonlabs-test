@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:horizonlabs_exam/src/models/movie.dart';
 import 'package:horizonlabs_exam/src/repositories/darkmode/theme_controller.dart';
+import 'package:horizonlabs_exam/src/repositories/movie/sort_service.dart';
 import 'package:horizonlabs_exam/src/utils/extensions.dart';
 
 class MovieDetails extends ConsumerStatefulWidget {
@@ -33,37 +34,70 @@ class _MovieDetailsState extends ConsumerState<MovieDetails>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AnimatedTextKit(
-              isRepeatingAnimation: false,
-              animatedTexts: [
-                ColorizeAnimatedText(
-                  movie.title,
-                  textStyle: Theme.of(context).textTheme.headline5!.copyWith(
-                        fontWeight: FontWeight.w900,
-                      ),
-                  colors: [
-                    Colors.red,
-                    Colors.purple,
-                    if (ref.watch(isDarkTheme)) Colors.white else Colors.black,
-                  ],
-                )
+            Wrap(
+              children: [
+                for (final genre in movie.genreIds!)
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 5,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(3),
+                      color: Colors.grey.shade200,
+                    ),
+                    child: Text(
+                      ref
+                          .watch(sortServiceProvider)
+                          .getGenreType(genre)
+                          .toUpperCase(),
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                  ),
               ],
             ),
-            const SizedBox(height: 3),
-            if (movie.voteAverage != 0) ...{
-              Text(
-                'Rating: ${movie.voteAverage}/10',
-                style: Theme.of(context).textTheme.subtitle1,
-              )
-            },
-            const SizedBox(height: 3),
-            if (movie.releaseDate != '')
-              Text(
-                'Released on: ${movie.releaseDate.toDate()}',
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-            const SizedBox(height: 8),
-            Text(movie.overview),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 8),
+                AnimatedTextKit(
+                  isRepeatingAnimation: false,
+                  animatedTexts: [
+                    ColorizeAnimatedText(
+                      movie.title,
+                      textStyle:
+                          Theme.of(context).textTheme.headline5!.copyWith(
+                                fontWeight: FontWeight.w900,
+                              ),
+                      colors: [
+                        Colors.red,
+                        Colors.purple,
+                        if (ref.watch(isDarkTheme))
+                          Colors.white
+                        else
+                          Colors.black,
+                      ],
+                    )
+                  ],
+                ),
+                const SizedBox(height: 3),
+                if (movie.voteAverage != 0) ...{
+                  Text(
+                    'Rating: ${movie.voteAverage}/10',
+                    style: Theme.of(context).textTheme.subtitle1,
+                  )
+                },
+                const SizedBox(height: 3),
+                if (movie.releaseDate != '')
+                  Text(
+                    'Released on: ${movie.releaseDate.toDate()}',
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
+                const SizedBox(height: 8),
+                Text(movie.overview),
+              ],
+            ),
           ],
         ),
       ),
