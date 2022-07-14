@@ -30,8 +30,10 @@ class Profile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        elevation: 0,
+        backgroundColor: Theme.of(context).backgroundColor,
       ),
+      backgroundColor: Theme.of(context).backgroundColor,
       body: SingleChildScrollView(
         child: Column(
           children: [

@@ -7,6 +7,7 @@ import 'package:horizonlabs_exam/src/features/home/widgets/now_showing_carousel.
 import 'package:horizonlabs_exam/src/features/home/widgets/upcoming_movies.dart';
 import 'package:horizonlabs_exam/src/features/profile/profile.dart';
 import 'package:horizonlabs_exam/src/repositories/movie/movie_service.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
 class Homepage extends ConsumerStatefulWidget {
@@ -34,9 +35,15 @@ class _HomepageState extends ConsumerState<Homepage> {
                   color: Colors.transparent,
                   child: GestureDetector(
                     onTap: () async {
-                      Navigator.restorablePushNamed(
-                        context,
-                        Profile.routeName,
+                      await showBarModalBottomSheet(
+                        context: context,
+                        builder: (context) => Container(
+                          constraints: BoxConstraints(
+                            maxHeight:
+                                MediaQuery.of(context).size.height * 0.65,
+                          ),
+                          child: const Profile(),
+                        ),
                       );
                     },
                     child: const CircleAvatar(

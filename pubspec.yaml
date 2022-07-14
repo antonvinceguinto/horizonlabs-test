@@ -22,6 +22,7 @@ dependencies:
 
   flutter_riverpod: ^1.0.4
   intl: ^0.17.0
+  modal_bottom_sheet: ^2.1.0
   riverpod: ^1.0.3
   shared_preferences: ^2.0.15
   sticky_headers: ^0.3.0+2

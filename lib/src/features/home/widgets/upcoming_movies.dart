@@ -47,9 +47,7 @@ class UpcomingMovies extends ConsumerWidget {
                   ),
                   backgroundColor:
                       ref.watch(genreSortProvider).name == genreType.name
-                          ? ref.watch(isDarkTheme)
-                              ? Colors.red
-                              : Colors.orange.shade400
+                          ? Colors.orange.shade400
                           : ref.watch(isDarkTheme)
                               ? Colors.black
                               : Colors.white,

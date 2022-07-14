@@ -77,12 +77,11 @@ final genreSortProvider = StateProvider<GenreType>(
 );
 
 /// Provider for sorted upcoming movies
-final sortedUpcomingMoviesProvider = FutureProvider<List<Movie>>((ref) async {
+final sortedUpcomingMoviesProvider =
+    FutureProvider.autoDispose<List<Movie>>((ref) async {
   final sortType = ref.watch(genreSortProvider);
 
   final movies = await ref.watch(sortServiceProvider).getUpcomingMovies();
-
-  debugPrint(movies.toString());
 
   // Sort the movies by the sort type.
   final sortedMovies = movies.where((movie) {
