@@ -5,7 +5,7 @@ import 'package:horizonlabs_exam/src/models/movie.dart';
 import 'package:horizonlabs_exam/src/repositories/movie/movie_interface.dart';
 import 'package:horizonlabs_exam/src/utils/errors/movies_exception.dart';
 
-enum MovieType { popular, nowShowing, upcoming }
+enum MovieType { popular, nowShowing }
 
 class MovieService extends IMovie {
   MovieService({
@@ -65,30 +65,6 @@ class MovieService extends IMovie {
       throw MoviesException.fromDioError(dioErr);
     }
   }
-
-  @override
-  Future<List<Movie>> getUpcomingMovies() async {
-    try {
-      final response = await dio.get<Map<String, dynamic>>(
-        '$baseUrl/movie/upcoming',
-        queryParameters: {
-          'api_key': environmentConfig.movieApiKey,
-        },
-      );
-
-      final results = List<Map<String, dynamic>>.from(
-        response.data!['results'] as Iterable<dynamic>,
-      );
-
-      final movies = results.map((movieData) {
-        return Movie.fromMap(movieData);
-      }).toList(growable: false);
-
-      return movies;
-    } on DioError catch (dioErr) {
-      throw MoviesException.fromDioError(dioErr);
-    }
-  }
 }
 
 /// Provider for Dio instance.
@@ -116,13 +92,6 @@ final nowShowingMoviesFutureProvider = FutureProvider.autoDispose<List<Movie>>(
   return movies;
 });
 
-/// FutureProvider for now showing movies.
-final upcomingMoviesFutureProvider = FutureProvider.autoDispose<List<Movie>>(
-    (AutoDisposeFutureProviderRef<List<Movie>> ref) async {
-  final movies = await fetchService(ref, MovieType.upcoming);
-  return movies;
-});
-
 /// Fetches movies from the service.
 Future<List<Movie>> fetchService(
   AutoDisposeFutureProviderRef<List<Movie>> ref,
@@ -139,9 +108,6 @@ Future<List<Movie>> fetchService(
       return movies;
     case MovieType.nowShowing:
       movies = await movieService.getNowShowingMovies();
-      return movies;
-    case MovieType.upcoming:
-      movies = await movieService.getUpcomingMovies();
       return movies;
   }
 }

@@ -7,6 +7,25 @@ class Profile extends ConsumerWidget {
 
   static const routeName = '/profile';
 
+  Widget _item(
+    String label,
+    void Function(bool) onChanged,
+    WidgetRef ref,
+  ) {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: ref.watch(isDarkTheme) ? Colors.grey : Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: SwitchListTile(
+        value: ref.watch(isDarkTheme),
+        onChanged: onChanged,
+        title: Text(label),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -30,14 +49,29 @@ class Profile extends ConsumerWidget {
                     fontWeight: FontWeight.bold,
                   ),
             ),
+            Text(
+              'antonvinceguinto@gmail.com',
+              style: Theme.of(context).textTheme.subtitle2,
+            ),
             const SizedBox(height: 40),
-            SwitchListTile(
-              value: ref.watch(isDarkTheme),
-              onChanged: (_) {
+            _item(
+              'Dark Mode 🌙',
+              (_) {
                 ref.watch(themeControllerProvider.notifier).updateThemeMode();
               },
-              title: const Text('Dark Mode 🌙'),
+              ref,
             ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              child: ListTile(
+                onTap: () {},
+                title: const Text(
+                  'Sign Out',
+                  style: TextStyle(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            )
           ],
         ),
       ),

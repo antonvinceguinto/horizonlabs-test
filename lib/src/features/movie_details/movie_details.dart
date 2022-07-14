@@ -132,7 +132,8 @@ class _MovieDetailsState extends ConsumerState<MovieDetails>
           children: [
             TabBar(
               controller: tabController,
-              labelColor: Colors.blue,
+              labelColor: Colors.orange.shade400,
+              indicatorColor: Colors.orange.shade400,
               tabs: const [
                 Tab(text: 'Overview 1'),
                 Tab(text: 'Overview 2'),

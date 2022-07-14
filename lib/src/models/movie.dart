@@ -11,6 +11,7 @@ class Movie {
     required this.overview,
     required this.releaseDate,
     required this.voteAverage,
+    required this.genreIds,
   });
 
   factory Movie.fromJson(String source) =>
@@ -25,6 +26,7 @@ class Movie {
       overview: map['overview']?.toString() ?? '',
       releaseDate: map['release_date']?.toString() ?? '',
       voteAverage: double.tryParse(map['vote_average'].toString()) ?? 0,
+      genreIds: map['genre_ids'].cast<int>() as List<int>,
     );
   }
 
@@ -40,38 +42,5 @@ class Movie {
   final String overview;
   final String releaseDate;
   final double voteAverage;
-
-  Movie copyWith({
-    int? id,
-    String? title,
-    String? posterPath,
-    String? backdropPath,
-    String? overview,
-    String? releaseDate,
-    double? voteAverage,
-  }) {
-    return Movie(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      posterPath: posterPath ?? this.posterPath,
-      backdropPath: backdropPath ?? this.backdropPath,
-      overview: overview ?? this.overview,
-      releaseDate: releaseDate ?? this.releaseDate,
-      voteAverage: voteAverage ?? this.voteAverage,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'title': title,
-      'poster_path': posterPath,
-      'backdrop_path': backdropPath,
-      'overview': overview,
-      'release_date': releaseDate,
-      'vote_average': voteAverage,
-    };
-  }
-
-  String toJson() => json.encode(toMap());
+  final List<int>? genreIds;
 }

@@ -21,7 +21,7 @@ class _HomepageState extends ConsumerState<Homepage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       child: NestedScrollView(
-        physics: const NeverScrollableScrollPhysics(),
+        physics: const ScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverOverlapAbsorber(
@@ -52,25 +52,24 @@ class _HomepageState extends ConsumerState<Homepage> {
         },
         body: Material(
           color: Theme.of(context).backgroundColor,
-          child: SafeArea(
-            child: SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
-              child: StickyHeader(
-                header: const Padding(
-                  padding: EdgeInsets.only(top: 40),
-                  child: SearchField(),
-                ),
-                content: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const NowShowingCarousel(),
-                    HorizontalMovieContainer(
-                      futureProvider: popularMoviesFutureProvider,
-                      headerTitle: 'Popular',
-                    ),
-                    const UpcomingMovies(),
-                  ],
-                ),
+          child: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            child: StickyHeader(
+              header: const Padding(
+                padding: EdgeInsets.only(top: 90),
+                child: SearchField(),
+              ),
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const NowShowingCarousel(),
+                  HorizontalMovieContainer(
+                    futureProvider: popularMoviesFutureProvider,
+                    headerTitle: 'Popular',
+                  ),
+                  const UpcomingMovies(),
+                  const SizedBox(height: 40),
+                ],
               ),
             ),
           ),
