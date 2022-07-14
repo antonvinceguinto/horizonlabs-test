@@ -74,57 +74,82 @@ No upcoming movies for ${ref.watch(genreSortProvider).name}
                     ),
                   );
                 }
-                return ReorderableListView.builder(
-                  onReorder: (oldIndex, newIndex) {},
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  itemCount: movies.length,
-                  itemBuilder: (context, index) {
-                    final movie = movies[index];
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 16,
+                        bottom: 8,
+                        top: 8,
+                      ),
+                      child: Text(
+                        'Re-orderable list',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    ),
+                    ReorderableListView.builder(
+                      onReorder: (oldIndex, newIndex) {
+                        movies.insert(
+                          newIndex,
+                          movies.removeAt(
+                            oldIndex,
+                          ),
+                        );
+                      },
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      itemCount: movies.length,
+                      itemBuilder: (context, index) {
+                        final movie = movies[index];
 
-                    return Container(
-                      key: Key(movie.id.toString()),
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: ref.watch(isDarkTheme)
-                            ? Colors.black
-                            : Colors.grey.shade200,
-                      ),
-                      child: ListTile(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            MovieDetails.routeName,
-                            arguments: movie,
-                          );
-                        },
-                        title: Text(
-                          movie.title,
-                          style:
-                              Theme.of(context).textTheme.bodyText2?.copyWith(
+                        return Container(
+                          key: Key(movie.id.toString()),
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: ref.watch(isDarkTheme)
+                                ? Colors.black
+                                : Colors.grey.shade200,
+                          ),
+                          child: ListTile(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                MovieDetails.routeName,
+                                arguments: movie,
+                              );
+                            },
+                            title: Text(
+                              movie.title,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2
+                                  ?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
-                        ),
-                        subtitle: Text(
-                          movie.overview,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        trailing: Text('⭐️ ${movie.voteAverage}'),
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.grey,
-                          backgroundImage: NetworkImage(
-                            movie.fullBackdropImageUrl,
+                            ),
+                            subtitle: Text(
+                              movie.overview,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            trailing: Text('⭐️ ${movie.voteAverage}'),
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.grey,
+                              backgroundImage: NetworkImage(
+                                movie.fullBackdropImageUrl,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  },
+                        );
+                      },
+                    ),
+                  ],
                 );
               },
               error: (err, s) {

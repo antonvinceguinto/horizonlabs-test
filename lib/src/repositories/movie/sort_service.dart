@@ -177,7 +177,7 @@ final sortedUpcomingMoviesProvider =
       case GenreType.western:
         return movie.genreIds!.contains(37);
     }
-  }).toList(growable: false);
+  }).toList();
 
   return sortedMovies;
 });

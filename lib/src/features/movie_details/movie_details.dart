@@ -45,7 +45,9 @@ class _MovieDetailsState extends ConsumerState<MovieDetails>
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(3),
-                      color: Colors.grey.shade200,
+                      color: ref.watch(isDarkTheme)
+                          ? Colors.black
+                          : Colors.grey.shade200,
                     ),
                     child: Text(
                       ref
