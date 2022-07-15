@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:horizonlabs_exam/src/environment_config.dart';
 import 'package:horizonlabs_exam/src/models/movie.dart';
 import 'package:horizonlabs_exam/src/repositories/movie/movie_interface.dart';
 import 'package:horizonlabs_exam/src/utils/errors/movies_exception.dart';
@@ -9,11 +9,9 @@ enum MovieType { popular, nowShowing }
 
 class MovieService extends IMovie {
   MovieService({
-    required this.environmentConfig,
     required this.dio,
   });
 
-  final EnvironmentConfig environmentConfig;
   final Dio dio;
 
   final String baseUrl = 'https://api.themoviedb.org/3';
@@ -24,7 +22,7 @@ class MovieService extends IMovie {
       final response = await dio.get<Map<String, dynamic>>(
         '$baseUrl/movie/popular',
         queryParameters: {
-          'api_key': environmentConfig.movieApiKey,
+          'api_key': dotenv.env['TMDB_API_KEY'],
         },
       );
 
@@ -48,7 +46,7 @@ class MovieService extends IMovie {
       final response = await dio.get<Map<String, dynamic>>(
         '$baseUrl/movie/now_playing',
         queryParameters: {
-          'api_key': environmentConfig.movieApiKey,
+          'api_key': dotenv.env['TMDB_API_KEY'],
         },
       );
 
@@ -73,7 +71,6 @@ final dioProvider = Provider((_) => Dio());
 /// Provider for MovieService.
 final movieServiceProvider = Provider<MovieService>(
   (ref) => MovieService(
-    environmentConfig: ref.watch(environmentConfigProvider),
     dio: ref.watch(dioProvider),
   ),
 );

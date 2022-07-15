@@ -1,0 +1,30 @@
+{
+	"results": [
+		{
+			"id": 1,
+			"title": "Movie 1",
+			"posterPath": "/pIkRyD18kl4FhoCNQuWxWu5cBLM.jpg",
+			"backdropPath": "/pIkRyD18kl4FhoCNQuWxWu5cBLM.jpg",
+			"releaseDate": "2020-01-01",
+			"voteAverage": 5,
+			"overview": "overview 1",
+			"genreIds": [
+				12,
+				14
+			]
+		},
+		{
+			"id": 2,
+			"title": "Movie 2",
+			"posterPath": "/pIkRyD18kl4FhoCNQuWxWu5cBLM.jpg",
+			"backdropPath": "/pIkRyD18kl4FhoCNQuWxWu5cBLM.jpg",
+			"releaseDate": "2020-01-01",
+			"voteAverage": 5,
+			"overview": "overview 2",
+			"genreIds": [
+				28,
+				16
+			]
+		}
+	]
+}

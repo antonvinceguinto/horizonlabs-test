@@ -11,17 +11,21 @@ environment:
 
 dependencies:
   animated_text_kit: ^4.2.2
+  build_runner: ^2.2.0
   carousel_slider: ^4.1.1
   cupertino_icons: ^1.0.5
   dio: ^4.0.6
 
   flutter:
     sdk: flutter
+  flutter_dotenv: ^5.0.2
   flutter_localizations:
     sdk: flutter
 
   flutter_riverpod: ^1.0.4
+  http: ^0.13.4
   intl: ^0.17.0
+  mockito: ^5.2.0
   modal_bottom_sheet: ^2.1.0
   riverpod: ^1.0.3
   shared_preferences: ^2.0.15
@@ -44,3 +48,5 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+    - .env
+    - test/data/

@@ -25,11 +25,12 @@ class MovieItem extends StatelessWidget {
         child: Stack(
           alignment: Alignment.bottomLeft,
           children: [
-            Image.network(
-              movie.fullImageUrl,
-              fit: BoxFit.cover,
-              width: double.infinity,
-            ),
+            // Image.network(
+            //   movie.fullImageUrl,
+            //   fit: BoxFit.cover,
+            //   width: double.infinity,
+            // ),
+            Text('test'),
             Positioned.fill(
               child: DecoratedBox(
                 decoration: BoxDecoration(

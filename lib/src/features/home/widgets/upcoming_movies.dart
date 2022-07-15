@@ -90,6 +90,9 @@ No upcoming movies for ${ref.watch(genreSortProvider).name}
                     ),
                     ReorderableListView.builder(
                       onReorder: (oldIndex, newIndex) {
+                        if (newIndex > oldIndex) {
+                          newIndex -= 1;
+                        }
                         movies.insert(
                           newIndex,
                           movies.removeAt(

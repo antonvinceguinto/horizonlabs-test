@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:horizonlabs_exam/src/environment_config.dart';
 import 'package:horizonlabs_exam/src/models/movie.dart';
 import 'package:horizonlabs_exam/src/repositories/movie/movie_service.dart';
 import 'package:horizonlabs_exam/src/repositories/movie/sort_interface.dart';
@@ -30,11 +30,9 @@ enum GenreType {
 
 class SortService extends ISort {
   SortService({
-    required this.environmentConfig,
     required this.dio,
   });
 
-  final EnvironmentConfig environmentConfig;
   final Dio dio;
 
   final String baseUrl = 'https://api.themoviedb.org/3';
@@ -45,7 +43,7 @@ class SortService extends ISort {
       final response = await dio.get<Map<String, dynamic>>(
         '$baseUrl/movie/upcoming',
         queryParameters: {
-          'api_key': environmentConfig.movieApiKey,
+          'api_key': dotenv.env['TMDB_API_KEY'],
         },
       );
 
@@ -113,7 +111,6 @@ class SortService extends ISort {
 /// Provider for Genre Service
 final sortServiceProvider = Provider<SortService>(
   (ref) => SortService(
-    environmentConfig: ref.watch(environmentConfigProvider),
     dio: ref.watch(dioProvider),
   ),
 );
