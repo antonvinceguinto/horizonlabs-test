@@ -6,6 +6,7 @@ import 'package:horizonlabs_exam/src/features/home/widgets/movie_item.dart';
 import 'package:horizonlabs_exam/src/models/movie.dart';
 import 'package:horizonlabs_exam/src/repositories/movie/movie_service.dart';
 import 'package:horizonlabs_exam/src/utils/errors/movies_exception.dart';
+import 'package:horizonlabs_exam/src/utils/helper.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'home_test.mocks.dart';
@@ -16,21 +17,23 @@ final repositoryProvider = Provider(
 
 final movieServiceProvider = FutureProvider((ref) async {
   final repository = ref.read(repositoryProvider);
+
   when(repository.getPopularMovies()).thenAnswer((_) async {
-    // Mock a return json
-    return [
-      const Movie(
-        id: 1,
-        title: 'test',
-        posterPath: 'test',
-        backdropPath: 'test',
-        voteAverage: 1,
-        overview: 'test',
-        releaseDate: 'test',
-        genreIds: [1, 2, 3],
-      ),
-    ];
+    // Fetch json file
+    final jsonResponse = await Helper.readJson();
+
+    // Convert json to a list movie object
+    final res = List<Map<String, dynamic>>.from(
+      jsonResponse['results'] as Iterable<dynamic>,
+    );
+
+    final movies = res.map((movieData) {
+      return Movie.fromMap(movieData);
+    }).toList(growable: false);
+
+    return movies;
   });
+
   return repository.getPopularMovies();
 });
 
@@ -79,10 +82,10 @@ void main() async {
         ),
       );
 
-      // The first frame is a loading state
+      // First frame is a loading state
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-      // MovieServiceProvider should have finished fetching the movies by now
+      // Provider should have finished fetching the movies by now
       await tester.pumpAndSettle();
       expect(find.byType(CircularProgressIndicator), findsNothing);
 
@@ -90,7 +93,10 @@ void main() async {
       expect(tester.widgetList(find.byType(MovieItem)), [
         isA<MovieItem>()
             .having((s) => s.movie.id, 'movie id', 1)
-            .having((s) => s.movie.title, 'movie label', 'test')
+            .having((s) => s.movie.title, 'movie title', 'Movie 1'),
+        isA<MovieItem>()
+            .having((s) => s.movie.id, 'movie id', 2)
+            .having((s) => s.movie.title, 'movie title', 'Movie 2')
       ]);
     });
   });
