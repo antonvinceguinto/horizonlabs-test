@@ -15,6 +15,14 @@ class CustomThemeData {
         ),
       ),
       backgroundColor: const Color(0xFFf9f9f9),
+      textTheme: TextTheme(
+        headline6: TextStyle(
+          color: Colors.black,
+        ),
+        bodyText2: TextStyle(
+          color: Colors.black,
+        ),
+      ),
       appBarTheme: const AppBarTheme(
         iconTheme: IconThemeData(
           color: Colors.black,
@@ -41,6 +49,14 @@ class CustomThemeData {
         ),
       ),
       backgroundColor: const Color(0xFF2a2a2a),
+      textTheme: TextTheme(
+        headline6: TextStyle(
+          color: Colors.white,
+        ),
+        bodyText2: TextStyle(
+          color: Colors.white,
+        ),
+      ),
       appBarTheme: const AppBarTheme(
         iconTheme: IconThemeData(
           color: Colors.white,

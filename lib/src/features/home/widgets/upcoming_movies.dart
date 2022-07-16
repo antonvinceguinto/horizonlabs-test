@@ -7,11 +7,6 @@ import 'package:horizonlabs_exam/src/repositories/darkmode/theme_controller.dart
 import 'package:horizonlabs_exam/src/repositories/movie/sort_service.dart';
 import 'package:horizonlabs_exam/src/utils/errors/movies_exception.dart';
 
-// final contentStateProvider =
-//     StateNotifierProvider<ContentProvider, List<DragAndDropList>>((ref) {
-//   return ContentProvider();
-// });
-
 class UpcomingMovies extends ConsumerStatefulWidget {
   const UpcomingMovies({super.key});
 
@@ -57,13 +52,12 @@ class _UpcomingMoviesState extends ConsumerState<UpcomingMovies> {
               ),
               backgroundColor:
                   ref.watch(genreSortProvider).name == genreType.name
-                      ? Colors.orange.shade400
+                      ? Colors.purple
                       : ref.watch(isDarkTheme)
-                          ? Colors.black
+                          ? Colors.grey.shade700
                           : Colors.white,
               onPressed: () {
                 ref.read(genreSortProvider.notifier).state = genreType;
-                // ref.read(contentStateProvider).clear();
                 contents.clear();
               },
               padding: const EdgeInsets.all(6),
@@ -84,10 +78,6 @@ class _UpcomingMoviesState extends ConsumerState<UpcomingMovies> {
         horizontal: 8,
         vertical: 4,
       ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: ref.watch(isDarkTheme) ? Colors.black : Colors.grey.shade200,
-      ),
       child: ListTile(
         onTap: () {
           Navigator.pushNamed(
@@ -98,9 +88,6 @@ class _UpcomingMoviesState extends ConsumerState<UpcomingMovies> {
         },
         title: Text(
           movie.title,
-          style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
         ),
         subtitle: Text(
           movie.overview,
@@ -135,8 +122,6 @@ class _UpcomingMoviesState extends ConsumerState<UpcomingMovies> {
 
   @override
   Widget build(BuildContext context) {
-    // contents = ref.read(contentStateProvider);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -162,14 +147,13 @@ class _UpcomingMoviesState extends ConsumerState<UpcomingMovies> {
             top: 8,
           ),
           child: Text(
-            'Re-orderable list',
+            'Re-orderable & Filterable list',
             style: Theme.of(context).textTheme.caption,
           ),
         ),
         ref.watch(sortedUpcomingMoviesProvider).when(
               data: (movies) {
                 if (contents.isEmpty) {
-                  contents.clear();
                   contents.addAll(
                     [
                       DragAndDropList(
@@ -178,15 +162,7 @@ class _UpcomingMoviesState extends ConsumerState<UpcomingMovies> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                'Top Rated',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2
-                                    ?.copyWith(
-                                      fontSize: 18,
-                                    ),
-                              ),
+                              Text('Top Rated'),
                               DragHandle(
                                 child: Icon(Icons.drag_handle),
                               ),
@@ -207,15 +183,7 @@ class _UpcomingMoviesState extends ConsumerState<UpcomingMovies> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                'Less/No Ratings',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2
-                                    ?.copyWith(
-                                      fontSize: 18,
-                                    ),
-                              ),
+                              Text('Less/No Ratings'),
                               DragHandle(
                                 child: Icon(Icons.drag_handle),
                               ),

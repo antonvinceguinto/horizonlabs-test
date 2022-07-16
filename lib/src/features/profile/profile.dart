@@ -8,8 +8,6 @@ class Profile extends ConsumerWidget {
 
   static const routeName = '/profile';
 
-  final Color clipColor = Colors.white;
-
   Widget _item(
     String label,
     void Function(bool) onChanged,
@@ -47,8 +45,8 @@ class Profile extends ConsumerWidget {
                       begin: Alignment.topRight,
                       end: Alignment.bottomLeft,
                       colors: [
-                        Color(0xFF2193b0),
-                        Color(0xFF2c3e50),
+                        Color(0xFF647DEE),
+                        Color(0xFF7F53AC),
                       ],
                     ),
                   ),
@@ -56,10 +54,17 @@ class Profile extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const CircleAvatar(
-                        radius: 60,
-                        backgroundImage: NetworkImage(
-                          'https://i.pravatar.cc/500',
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: Colors.white,
+                        ),
+                        child: const CircleAvatar(
+                          radius: 60,
+                          backgroundImage: NetworkImage(
+                            'https://i.pravatar.cc/500',
+                          ),
                         ),
                       ),
                     ],
