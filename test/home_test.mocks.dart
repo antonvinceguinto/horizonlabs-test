@@ -5,10 +5,15 @@
 import 'dart:async' as _i4;
 
 import 'package:dio/dio.dart' as _i2;
+import 'package:flutter/material.dart' as _i8;
+import 'package:flutter_riverpod/flutter_riverpod.dart' as _i7;
 import 'package:horizonlabs_exam/src/models/movie.dart' as _i5;
+import 'package:horizonlabs_exam/src/repositories/darkmode/theme_controller.dart'
+    as _i6;
 import 'package:horizonlabs_exam/src/repositories/movie/movie_service.dart'
     as _i3;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:state_notifier/state_notifier.dart' as _i9;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -48,4 +53,60 @@ class MockMovieService extends _i1.Mock implements _i3.MovieService {
       (super.noSuchMethod(Invocation.method(#getNowShowingMovies, []),
               returnValue: Future<List<_i5.Movie>>.value(<_i5.Movie>[]))
           as _i4.Future<List<_i5.Movie>>);
+}
+
+/// A class which mocks [ThemeController].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockThemeController extends _i1.Mock implements _i6.ThemeController {
+  MockThemeController() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  set onError(_i7.ErrorListener? _onError) =>
+      super.noSuchMethod(Invocation.setter(#onError, _onError),
+          returnValueForMissingStub: null);
+  @override
+  bool get mounted =>
+      (super.noSuchMethod(Invocation.getter(#mounted), returnValue: false)
+          as bool);
+  @override
+  _i4.Stream<_i8.ThemeMode> get stream => (super.noSuchMethod(
+      Invocation.getter(#stream),
+      returnValue: Stream<_i8.ThemeMode>.empty()) as _i4.Stream<_i8.ThemeMode>);
+  @override
+  _i8.ThemeMode get state => (super.noSuchMethod(Invocation.getter(#state),
+      returnValue: _i8.ThemeMode.system) as _i8.ThemeMode);
+  @override
+  set state(_i8.ThemeMode? value) =>
+      super.noSuchMethod(Invocation.setter(#state, value),
+          returnValueForMissingStub: null);
+  @override
+  _i8.ThemeMode get debugState =>
+      (super.noSuchMethod(Invocation.getter(#debugState),
+          returnValue: _i8.ThemeMode.system) as _i8.ThemeMode);
+  @override
+  bool get hasListeners =>
+      (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
+          as bool);
+  @override
+  _i4.Future<void> updateThemeMode() =>
+      (super.noSuchMethod(Invocation.method(#updateThemeMode, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
+  @override
+  bool updateShouldNotify(_i8.ThemeMode? old, _i8.ThemeMode? current) => (super
+      .noSuchMethod(Invocation.method(#updateShouldNotify, [old, current]),
+          returnValue: false) as bool);
+  @override
+  _i7.RemoveListener addListener(_i9.Listener<_i8.ThemeMode>? listener,
+          {bool? fireImmediately = true}) =>
+      (super.noSuchMethod(
+          Invocation.method(
+              #addListener, [listener], {#fireImmediately: fireImmediately}),
+          returnValue: () {}) as _i7.RemoveListener);
+  @override
+  void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
+      returnValueForMissingStub: null);
 }

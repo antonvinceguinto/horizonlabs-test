@@ -37,13 +37,17 @@ final movieServiceProvider = FutureProvider((ref) async {
   return repository.getPopularMovies();
 });
 
-@GenerateMocks([MovieService])
+@GenerateMocks([
+  MovieService,
+])
 void main() async {
-  /// IMPORTANT: Initialize dotenv
-  TestWidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load();
+  group('Movie list and profile page', () {
+    setUp(() async {
+      /// IMPORTANT: Initialize dotenv
+      TestWidgetsFlutterBinding.ensureInitialized();
+      await dotenv.load();
+    });
 
-  group('Movie Service', () {
     testWidgets('should populate a listview with popular movies',
         (WidgetTester tester) async {
       await tester.pumpWidget(

@@ -16,6 +16,11 @@ dependencies:
   cupertino_icons: ^1.0.5
   dio: ^4.0.6
 
+  drag_and_drop_lists:
+    git:
+      url: https://github.com/init-Mobile/DragAndDropLists
+      ref: master
+
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.0.2
@@ -27,6 +32,7 @@ dependencies:
   intl: ^0.17.0
   mockito: ^5.2.0
   modal_bottom_sheet: ^2.1.0
+  network_image_mock: ^2.1.1
   riverpod: ^1.0.3
   shared_preferences: ^2.0.15
   sticky_headers: ^0.3.0+2
