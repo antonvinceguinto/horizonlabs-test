@@ -1,3 +1,4 @@
+import 'package:custom_clippers/custom_clippers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:horizonlabs_exam/src/repositories/darkmode/theme_controller.dart';
@@ -7,6 +8,8 @@ class Profile extends ConsumerWidget {
 
   static const routeName = '/profile';
 
+  final Color clipColor = Colors.white;
+
   Widget _item(
     String label,
     void Function(bool) onChanged,
@@ -15,7 +18,7 @@ class Profile extends ConsumerWidget {
     return Container(
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: ref.watch(isDarkTheme) ? Colors.grey : Colors.grey.shade200,
+        color: ref.watch(isDarkTheme) ? Colors.black : Colors.grey.shade200,
         borderRadius: BorderRadius.circular(10),
       ),
       child: SwitchListTile(
@@ -29,19 +32,39 @@ class Profile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Theme.of(context).backgroundColor,
-      ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 50),
-            const CircleAvatar(
-              radius: 60,
-              backgroundImage: NetworkImage(
-                'https://i.pravatar.cc/500',
+            Container(
+              child: ClipPath(
+                clipper: DirectionalWaveClipper(),
+                child: Container(
+                  width: double.infinity,
+                  height: 250,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        Color(0xFF2193b0),
+                        Color(0xFF2c3e50),
+                      ],
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const CircleAvatar(
+                        radius: 60,
+                        backgroundImage: NetworkImage(
+                          'https://i.pravatar.cc/500',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 10),
