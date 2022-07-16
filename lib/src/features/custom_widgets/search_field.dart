@@ -8,7 +8,7 @@ class SearchField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       height: 75,
       color: Theme.of(context).backgroundColor,
       child: TextField(

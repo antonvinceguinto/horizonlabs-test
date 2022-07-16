@@ -63,6 +63,13 @@ class _UpcomingMoviesState extends ConsumerState<UpcomingMovies> {
               padding: const EdgeInsets.all(6),
               label: Text(
                 genreType.name.toUpperCase(),
+                style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                      color: ref.watch(genreSortProvider).name == genreType.name
+                          ? Colors.white
+                          : ref.watch(isDarkTheme)
+                              ? Colors.white
+                              : Colors.black,
+                    ),
               ),
             ),
           );
